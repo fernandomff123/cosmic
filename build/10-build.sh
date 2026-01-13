@@ -1,55 +1,50 @@
 #!/usr/bin/bash
+
 set -eoux pipefail
 
 ###############################################################################
 # Main Build Script
-# Executes in the “open” stage so rpmdb is writable
 ###############################################################################
+# This script follows the @ublue-os/bluefin pattern for build scripts.
+# It uses set -eoux pipefail for strict error handling and debugging.
+###############################################################################
+
+# Source helper functions
+# shellcheck source=/dev/null
+source /ctx/build/copr-helpers.sh
 
 echo "::group:: Copy Custom Files"
 
-# Copiar Brewfiles
+# Copy Brewfiles to standard location
 mkdir -p /usr/share/ublue-os/homebrew/
 cp /ctx/custom/brew/*.Brewfile /usr/share/ublue-os/homebrew/
 
-# Consolidar Just files
+# Consolidate Just Files
 mkdir -p /usr/share/ublue-os/just/
 find /ctx/custom/ujust -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just
 
-# Copiar Flatpak preinstall files
+# Copy Flatpak preinstall files
 mkdir -p /etc/flatpak/preinstall.d/
 cp /ctx/custom/flatpaks/*.preinstall /etc/flatpak/preinstall.d/
 
 echo "::endgroup::"
 
-echo "::group:: Install Base Packages"
+echo "::group:: Install Packages"
 
-# Exemplo de pacotes que sempre funcionam
-dnf5 install -y tmux wget curl
+# Install packages using dnf5
+# Example: dnf5 install -y tmux
 
-# Chamar OnePassword
-if [ -f /ctx/build/20-onepassword.sh ]; then
-    echo "::group:: Install OnePassword"
-    /ctx/build/20-onepassword.sh
-    echo "::endgroup::"
-fi
-
-# Chamar Cosmic Desktop
-if [ -f /ctx/build/30-cosmic-desktop.sh ]; then
-    echo "::group:: Install Cosmic Desktop"
-    /ctx/build/30-cosmic-desktop.sh
-    echo "::endgroup::"
-fi
+# Example using COPR with isolated pattern:
+# copr_install_isolated "ublue-os/staging" package-name
 
 echo "::endgroup::"
 
 echo "::group:: System Configuration"
 
-# Exemplo: habilitar serviços importantes
+# Enable/disable systemd services
 systemctl enable podman.socket
-# systemctl mask unwanted-service
+# Example: systemctl mask unwanted-service
 
 echo "::endgroup::"
 
 echo "Custom build complete!"
-
