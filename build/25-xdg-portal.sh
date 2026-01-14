@@ -6,14 +6,7 @@ echo "::group::Install XDG Portal & DBus for COSMIC"
 dnf5 makecache
 
 # Instala pacotes necessários para XDG/Flatpak/COSMIC
-dnf5 install -y \
-    dbus-x11 \
-    xdg-desktop-portal \
-    xdg-desktop-portal-gtk \
-    flatpak \
-    gvfs \
-    gvfs-smb \
-    dbus-user-session
+dnf5 install -y dbus-x11 
 
 # Ativa systemd user session para greetd / COSMIC
 systemctl enable --now dbus.socket
