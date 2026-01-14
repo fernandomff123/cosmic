@@ -33,7 +33,7 @@ echo "::group:: Install Packages"
 
 # Install packages using dnf5
 # Example: dnf5 install -y tmux
-
+/ctx/build/30-cosmic-desktop.sh
 # Example using COPR with isolated pattern:
 # copr_install_isolated "ublue-os/staging" package-name
 

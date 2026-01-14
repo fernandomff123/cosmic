@@ -80,12 +80,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    bash -euxo pipefail <<'EOF'
-for f in /ctx/build/[0-9]*.sh; do
-  echo "Running $f"
-  bash "$f"
-done
-EOF
+     /ctx/build/10-build.sh
     
 ### LINTING
 ## Verify final image and contents are correct.
