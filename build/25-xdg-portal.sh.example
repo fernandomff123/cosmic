@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "::group::Install XDG Portal & DBus for COSMIC"
+
+# Instala apenas os pacotes necessários
+dnf5 install -y \
+  xdg-desktop-portal \
+  xdg-desktop-portal-gtk \
+  flatpak \
+  gvfs \
+  gvfs-smb
+
+# NÃO usar systemctl enable aqui!
+# Os serviços serão iniciados automaticamente na VM quando o systemd estiver rodando
+
+echo "::endgroup::"
+echo "XDG Portal & DBus setup complete!"
+
